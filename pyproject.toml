@@ -1,7 +1,7 @@
 [build-system]
 requires = [
     "scikit-build-core>=0.11",
-    "Cython>=3.0.12,<3.1.0"
+    "Cython>=3.1.6,<3.1.0"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -11,7 +11,7 @@ dynamic = ["version"]
 dependencies = [
   "rapidfuzz >= 3.9.0, < 4.0.0"
 ]
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 authors = [
   {name = "Max Bachmann", email = "pypi@maxbachmann.de"},
   {name = "David Necas"},
@@ -26,11 +26,11 @@ readme = "README.md"
 license = "GPL-2.0-or-later"
 classifiers=[
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
 
 [project.urls]
@@ -65,7 +65,7 @@ line-length = 120
 
 [tool.mypy]
 files = ["src"]
-python_version = "3.9"
+python_version = "3.10"
 warn_unused_configs = true
 show_error_codes = true
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
@@ -81,7 +81,7 @@ xfail_strict = true
 log_cli_level = "info"
 
 [tool.pylint]
-py-version = "3.9"
+py-version = "3.10"
 
 [tool.pylint.reports]
 output-format = "colorized"
@@ -147,3 +147,8 @@ isort.required-imports = ["from __future__ import annotations"]
 "bench/**" = ["T20"]
 "_custom_build/backend.py" = ["T20"]
 "setup.py" = ["T20"]
+
+[tool.cibuildwheel]
+enable = ["cpython-freethreading", "pypy"]
+test-requires = ["pytest", "hypothesis"]
+test-command = "pytest {package}/tests"

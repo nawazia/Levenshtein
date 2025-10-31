@@ -16,12 +16,12 @@ jobs:
         with:
           submodules: 'true'
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest hypothesis mypy Cython==3.0.12
+          pip install pytest hypothesis mypy Cython==3.1.6
 
       # The cythonized files allow installation from the sdist without cython
       - name: Generate cython
@@ -45,85 +45,77 @@ jobs:
         run: |
           tools/seg_wrapper.sh pytest tests
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: artifact-sdist
           path: dist/*.tar.gz
 
   build_wheels_windows:
-    name: Build wheel on windows-latest/${{matrix.arch}}/${{matrix.python_tag}}
-    needs: [build_sdist]
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [auto32, auto64, ARM64]
-    env:
-      CIBW_ARCHS: ${{matrix.arch}}
-      CIBW_TEST_SKIP: "*-win32"
-      CIBW_TEST_REQUIRES: pytest hypothesis
-      CIBW_TEST_COMMAND: pytest {package}/tests
-      CIBW_BUILD_VERBOSITY: 3
-      CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifact-sdist
-          path: dist
-
-      - uses: actions/setup-python@v5
-
-      - name: Copy wheel
-        run: cp dist/*.tar.gz rapidfuzz.tar.gz
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.23
-        with:
-          package-dir: rapidfuzz.tar.gz
-          output-dir: wheelhouse
-
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact-${{ github.job }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
-
-  build_wheels_macos:
-    name: Build wheel on macos-latest/${{matrix.arch}}/${{matrix.python_tag}}
+    name: Build wheel on ${{ matrix.os }}/auto
     needs: [build_sdist]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13, macos-14]
+        os: [windows-latest, windows-11-arm]
     env:
-      CIBW_ARCHS: native
-      CIBW_TEST_SKIP: "pp*-macosx_*"
-      CIBW_TEST_REQUIRES: pytest hypothesis
-      CIBW_TEST_COMMAND: pytest {package}/tests
+      CIBW_TEST_SKIP: "*-win32"
       CIBW_BUILD_VERBOSITY: 3
-      CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: artifact-sdist
           path: dist
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
 
       - name: Copy wheel
-        run: cp dist/*.tar.gz rapidfuzz.tar.gz
+        run: cp dist/*.tar.gz levenshtein.tar.gz
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.23
+        uses: pypa/cibuildwheel@v3.2.1
         with:
-          package-dir: rapidfuzz.tar.gz
+          package-dir: levenshtein.tar.gz
           output-dir: wheelhouse
 
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
+        with:
+          name: artifact-${{ github.job }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+
+  build_wheels_macos:
+    name: Build wheel on ${{ matrix.os }}/auto
+    needs: [build_sdist]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15-intel, macos-14]
+    env:
+      CIBW_TEST_SKIP: "pp*-macosx_*"
+      CIBW_BUILD_VERBOSITY: 3
+
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: artifact-sdist
+          path: dist
+
+      - uses: actions/setup-python@v6
+
+      - name: Copy wheel
+        run: cp dist/*.tar.gz levenshtein.tar.gz
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.2.1
+        with:
+          package-dir: levenshtein.tar.gz
+          output-dir: wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v5
         with:
           name: artifact-${{ github.job }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
@@ -135,66 +127,89 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [auto, aarch64, ppc64le, s390x]
-        python_tag: ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*", "pp39-*", "pp310-*", "pp311-*"]
-        exclude:
-          # PyPy builds not supported on ppc64le / s390x
-          - arch: ppc64le
-            python_tag: "pp39-*"
-          - arch: ppc64le
-            python_tag: "pp310-*"
-          - arch: ppc64le
-            python_tag: "pp311-*"
-          - arch: s390x
-            python_tag: "pp39-*"
-          - arch: s390x
-            python_tag: "pp310-*"
-          - arch: s390x
-            python_tag: "pp311-*"
+        arch: [auto, ppc64le, s390x]
+        python_tag: ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
     env:
       CIBW_ARCHS_LINUX: ${{matrix.arch}}
       CIBW_BUILD: ${{matrix.python_tag}}
-      CIBW_TEST_SKIP: "{*-manylinux_{aarch64,ppc64le,s390x},*musllinux_*}"
-      CIBW_TEST_REQUIRES: pytest hypothesis
-      CIBW_TEST_COMMAND: pytest {package}/tests
+      CIBW_TEST_SKIP: "{*_{aarch64,ppc64le,s390x},*musllinux_*}"
       CIBW_BUILD_VERBOSITY: 3
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: artifact-sdist
           path: dist
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
 
       - name: Copy wheel
-        run: cp dist/*.tar.gz rapidfuzz.tar.gz
+        run: cp dist/*.tar.gz levenshtein.tar.gz
 
       - uses: docker/setup-qemu-action@v3
         name: Set up QEMU
 
       - name: Build wheel
-        uses: pypa/cibuildwheel@v2.23
+        uses: pypa/cibuildwheel@v3.2.1
         with:
-          package-dir: rapidfuzz.tar.gz
+          package-dir: levenshtein.tar.gz
           output-dir: wheelhouse
 
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: artifact-${{ github.job }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
+  build_wheels_linux_arm:
+    name: Build wheels on ubuntu-24.04-arm/${{matrix.arch}}/${{matrix.python_tag}}
+    needs: [build_sdist]
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [aarch64, armv7l]
+        python_tag: ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
+    env:
+      CIBW_ARCHS_LINUX: ${{matrix.arch}}
+      CIBW_BUILD: ${{matrix.python_tag}}
+      CIBW_TEST_SKIP: "{*_{aarch64,ppc64le,s390x},*musllinux_*}"
+      CIBW_BUILD_VERBOSITY: 3
+
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: artifact-sdist
+          path: dist
+
+      - uses: actions/setup-python@v6
+
+      - name: Copy wheel
+        run: cp dist/*.tar.gz levenshtein.tar.gz
+
+      - name: Build wheel
+        uses: pypa/cibuildwheel@v3.2.1
+        with:
+          package-dir: levenshtein.tar.gz
+          output-dir: wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v5
+        with:
+          name: artifact-${{ github.job }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+
+
   deploy-wheels:
     if: github.event_name == 'release' && github.event.action == 'published'
-    needs: [build_wheels_windows, build_wheels_macos, build_wheels_linux, build_sdist]
+    needs: [build_wheels_windows, build_wheels_macos, build_wheels_linux, build_wheels_arm, build_sdist]
     name: deploy wheels to pypi
     runs-on: ubuntu-latest
     environment: pypi-release
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           path: dist
           pattern: artifact-*

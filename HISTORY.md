@@ -1,5 +1,19 @@
 ## Changelog
 
+### v0.27.2
+#### Changed
+- fix build with ``scikit-build-core`` ``v0.11``
+- upgrade to `Cython==3.1.6`
+- upgrade to `rapidfuzz-cpp==3.3.3`
+
+# Added
+- add support for free threaded Python
+- add python 3.14 wheels
+
+### Removed
+- drop support for Python 3.9
+- drop 32 bit linux wheels
+
 ### v0.27.1
 #### Changed
 - fix build with ``scikit-build-core`` ``v0.11``
