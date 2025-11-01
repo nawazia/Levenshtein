@@ -121,18 +121,11 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_wheels_linux:
-    name: Build wheels on ubuntu-latest/${{matrix.arch}}/${{matrix.python_tag}}
+    name: Build wheels on ubuntu-latest/auto
     needs: [build_sdist]
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [auto, ppc64le, s390x]
-        python_tag: ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
     env:
-      CIBW_ARCHS_LINUX: ${{matrix.arch}}
-      CIBW_BUILD: ${{matrix.python_tag}}
-      CIBW_TEST_SKIP: "{*_{aarch64,ppc64le,s390x},*musllinux_*}"
+      CIBW_TEST_SKIP: "*musllinux_*"
       CIBW_BUILD_VERBOSITY: 3
 
     steps:
@@ -145,9 +138,6 @@ jobs:
 
       - name: Copy wheel
         run: cp dist/*.tar.gz levenshtein.tar.gz
-
-      - uses: docker/setup-qemu-action@v3
-        name: Set up QEMU
 
       - name: Build wheel
         uses: pypa/cibuildwheel@v3.2.1
@@ -162,18 +152,16 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_wheels_linux_arm:
-    name: Build wheels on ubuntu-24.04-arm/${{matrix.arch}}/${{matrix.python_tag}}
+    name: Build wheels on ubuntu-24.04-arm/${{matrix.arch}}
     needs: [build_sdist]
     runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
       matrix:
         arch: [aarch64, armv7l]
-        python_tag: ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
     env:
       CIBW_ARCHS_LINUX: ${{matrix.arch}}
-      CIBW_BUILD: ${{matrix.python_tag}}
-      CIBW_TEST_SKIP: "{*_{aarch64,ppc64le,s390x},*musllinux_*}"
+      CIBW_TEST_SKIP: "{*_{aarch64},*musllinux_*}"
       CIBW_BUILD_VERBOSITY: 3
 
     steps:

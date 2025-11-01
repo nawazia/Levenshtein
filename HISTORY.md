@@ -1,5 +1,12 @@
 ## Changelog
 
+### v0.27.3
+#### Fixed
+- add missing pypy and freethreaded linux wheels
+
+#### Removed
+- drop s390x and ppc64le wheels since they are virtually unused and require extremly long to build under emulation
+
 ### v0.27.2
 #### Changed
 - fix build with ``scikit-build-core`` ``v0.11``
