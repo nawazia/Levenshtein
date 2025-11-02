@@ -1,0 +1,121 @@
+{
+  "tasks": [
+    {
+      "id": "task_1",
+      "title": "Implement Weighted Edits Support",
+      "rationale": "To enhance similarity scoring by allowing certain character substitutions to have different weights.",
+      "deliverables": [
+        "New API method distance_with_weights(s1, s2, weights_map)",
+        "Updated documentation",
+        "Tests covering various weight scenarios"
+      ],
+      "probable_files": [
+        "src/Levenshtein/__init__.py",
+        "src/Levenshtein/StringMatcher.py",
+        "docs/index.rst",
+        "docs/levenshtein.rst"
+      ]
+    },
+    {
+      "id": "task_2",
+      "title": "Add Max-Distance Cutoff Option",
+      "rationale": "To improve performance by allowing early termination of distance calculations for large input sets.",
+      "deliverables": [
+        "Methods distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)",
+        "Benchmarks",
+        "Backward compatibility documentation"
+      ],
+      "probable_files": [
+        "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
+        "docs/index.rst"
+      ]
+    },
+    {
+      "id": "task_3",
+      "title": "Implement Multi-Threaded Batch Computation",
+      "rationale": "To allow faster processing of large lists of strings for similarity ranking.",
+      "deliverables": [
+        "New batch method batch_distance(list1, list2, threads=T)",
+        "Updated documentation",
+        "New performance test case"
+      ],
+      "probable_files": [
+        "src/Levenshtein/__init__.py",
+        "src/Levenshtein/StringMatcher.py",
+        "docs/index.rst"
+      ]
+    },
+    {
+      "id": "task_4",
+      "title": "Output Edit Operations Path",
+      "rationale": "To provide detailed insights into the edit operations performed during distance calculations.",
+      "deliverables": [
+        "Method distance_with_ops(s1, s2) returning detailed operations",
+        "Documentation updates",
+        "Tests for operations output"
+      ],
+      "probable_files": [
+        "src/Levenshtein/__init__.py",
+        "src/Levenshtein/StringMatcher.py",
+        "docs/index.rst"
+      ]
+    },
+    {
+      "id": "task_5",
+      "title": "Support Unicode Grapheme Clusters",
+      "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations.",
+      "deliverables": [
+        "New optional parameter use_graphemes=True",
+        "Documentation of behavior",
+        "Tests covering grapheme vs code-point scenarios"
+      ],
+      "probable_files": [
+        "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
+        "docs/index.rst"
+      ]
+    },
+    {
+      "id": "task_6",
+      "title": "Introduce Pure-Python Fallback Module",
+      "rationale": "To maintain functionality on platforms where the C extension cannot compile.",
+      "deliverables": [
+        "Fallback module levenshtein_py.dart",
+        "Automatic selection logic",
+        "Documentation on performance trade-off"
+      ],
+      "probable_files": [
+        "src/Levenshtein/__init__.py",
+        "docs/index.rst",
+        "pyproject.toml"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "src": 1,
+      "dst": 4,
+      "reason": "distance_with_weights may be used in distance_with_ops",
+      "confidence": 0.7
+    },
+    {
+      "src": 2,
+      "dst": 3,
+      "reason": "max-distance cutoff may affect batch processing",
+      "confidence": 0.6
+    },
+    {
+      "src": 5,
+      "dst": 1,
+      "reason": "Unicode support may impact weighted edits",
+      "confidence": 0.5
+    },
+    {
+      "src": 6,
+      "dst": 2,
+      "reason": "Fallback module may need to support max-distance cutoff",
+      "confidence": 0.4
+    }
+  ]
+}
