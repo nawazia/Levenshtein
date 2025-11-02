@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "id": "1",
+      "id": "task_1",
       "title": "Implement Weighted Edits Support",
       "rationale": "To enhance similarity scoring by allowing certain character substitutions to count differently in edit distance calculations.",
       "deliverables": [
@@ -10,46 +10,46 @@
         "Tests covering various weight scenarios"
       ],
       "probable_files": [
-        "src/Levenshtein/levenshtein_cpp.pyx",
         "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
         "docs/index.rst",
         "tests/test_weighted_edits.py"
       ]
     },
     {
-      "id": "2",
+      "id": "task_2",
       "title": "Add Max-Distance Cutoff Option",
-      "rationale": "To improve performance by allowing the distance method to return None for inputs exceeding a specified threshold.",
+      "rationale": "To improve performance by allowing the distance method to return early for inputs exceeding a specified threshold.",
       "deliverables": [
         "New methods distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)",
         "Benchmarks",
         "Backward compatibility documentation"
       ],
       "probable_files": [
-        "src/Levenshtein/levenshtein_cpp.pyx",
         "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
         "docs/index.rst",
         "tests/test_max_distance_cutoff.py"
       ]
     },
     {
-      "id": "3",
+      "id": "task_3",
       "title": "Implement Multi-Threaded Batch Computation",
-      "rationale": "To allow faster processing of large lists of strings for similarity ranking.",
+      "rationale": "To allow faster processing of large lists of strings for similarity ranking through parallel computation.",
       "deliverables": [
         "New batch method batch_distance(list1, list2, threads=T)",
         "Updated documentation",
         "New performance test case"
       ],
       "probable_files": [
-        "src/Levenshtein/levenshtein_cpp.pyx",
         "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
         "docs/index.rst",
         "tests/test_batch_distance.py"
       ]
     },
     {
-      "id": "4",
+      "id": "task_4",
       "title": "Output Edit Operations Path",
       "rationale": "To provide users with detailed information on the edit operations performed during distance calculations.",
       "deliverables": [
@@ -58,14 +58,14 @@
         "Tests for edit operations output"
       ],
       "probable_files": [
-        "src/Levenshtein/levenshtein_cpp.pyx",
         "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
         "docs/index.rst",
         "tests/test_edit_operations.py"
       ]
     },
     {
-      "id": "5",
+      "id": "task_5",
       "title": "Support Unicode Grapheme Clusters",
       "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations, improving correctness.",
       "deliverables": [
@@ -74,24 +74,24 @@
         "Tests covering grapheme vs code-point scenarios"
       ],
       "probable_files": [
-        "src/Levenshtein/levenshtein_cpp.pyx",
         "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_cpp.pyx",
         "docs/index.rst",
         "tests/test_unicode_graphemes.py"
       ]
     },
     {
-      "id": "6",
+      "id": "task_6",
       "title": "Introduce Pure-Python Fallback Module",
-      "rationale": "To ensure functionality on platforms where the C extension cannot compile, improving portability.",
+      "rationale": "To ensure functionality on platforms where the C extension cannot compile, enhancing portability.",
       "deliverables": [
         "Fallback module levenshtein_py.dart",
         "Automatic selection logic",
         "Documentation on performance trade-off"
       ],
       "probable_files": [
-        "src/Levenshtein/levenshtein_py.dart",
         "src/Levenshtein/__init__.py",
+        "src/Levenshtein/levenshtein_py.dart",
         "docs/index.rst",
         "tests/test_fallback.py"
       ]
@@ -100,27 +100,39 @@
   "edges": [
     {
       "src": 1,
-      "dst": 4,
-      "reason": "distance_with_weights is required for distance_with_ops",
-      "confidence": 0.8
+      "dst": 2,
+      "reason": "Max-distance cutoff may depend on weighted edits for scoring.",
+      "confidence": 0.7
     },
     {
-      "src": 2,
+      "src": 1,
       "dst": 3,
-      "reason": "max-distance cutoff may affect batch processing",
+      "reason": "Batch computation may utilize weighted edits for distance calculations.",
       "confidence": 0.6
     },
     {
-      "src": 3,
-      "dst": 5,
-      "reason": "multi-threading may be needed for grapheme support",
+      "src": 2,
+      "dst": 4,
+      "reason": "Edit operations path may be influenced by max-distance logic.",
       "confidence": 0.5
+    },
+    {
+      "src": 3,
+      "dst": 4,
+      "reason": "Batch processing may require detailed edit operations output.",
+      "confidence": 0.5
+    },
+    {
+      "src": 4,
+      "dst": 5,
+      "reason": "Edit operations may need to account for grapheme clusters.",
+      "confidence": 0.4
     },
     {
       "src": 5,
       "dst": 6,
-      "reason": "grapheme support is essential for fallback module",
-      "confidence": 0.7
+      "reason": "Fallback module should support grapheme clusters for consistency.",
+      "confidence": 0.3
     }
   ]
 }
