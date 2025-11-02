@@ -61,3 +61,5 @@ Software Foundation; either version 2 of the License, or (at your option)
 any later version.
 
 See the file [LICENSE](https://github.com/rapidfuzz/Levenshtein/blob/main/LICENSE) for the full text of GNU General Public License version 2.
+
+Reviewed by Bob
