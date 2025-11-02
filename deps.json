@@ -19,7 +19,7 @@
     {
       "id": "task_2",
       "title": "Add Max-Distance Cutoff Option",
-      "rationale": "To improve performance by allowing the distance method to return early for inputs exceeding a specified threshold.",
+      "rationale": "To improve performance by allowing the distance method to return early for large input sets when the difference exceeds a threshold.",
       "deliverables": [
         "New methods distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)",
         "Benchmarks",
@@ -35,7 +35,7 @@
     {
       "id": "task_3",
       "title": "Implement Multi-Threaded Batch Computation",
-      "rationale": "To allow faster processing of large lists of strings for similarity ranking through parallel computation.",
+      "rationale": "To allow users to process large lists of strings in parallel, improving performance for bulk similarity ranking.",
       "deliverables": [
         "New batch method batch_distance(list1, list2, threads=T)",
         "Updated documentation",
@@ -67,7 +67,7 @@
     {
       "id": "task_5",
       "title": "Support Unicode Grapheme Clusters",
-      "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations, improving correctness.",
+      "rationale": "To ensure multi-codepoint characters are treated as a single unit in distance calculations, improving correctness.",
       "deliverables": [
         "New optional parameter use_graphemes=True",
         "Documentation of behavior",
@@ -83,14 +83,14 @@
     {
       "id": "task_6",
       "title": "Introduce Pure-Python Fallback Module",
-      "rationale": "To ensure functionality on platforms where the C extension cannot compile, enhancing portability.",
+      "rationale": "To ensure functionality on platforms where the C extension cannot compile, improving portability.",
       "deliverables": [
         "Fallback module levenshtein_py.dart",
         "Automatic selection logic",
-        "Documentation on performance trade-off"
+        "Documentation on performance trade-off",
+        "Tests validating equivalence with C version"
       ],
       "probable_files": [
-        "src/Levenshtein/__init__.py",
         "src/Levenshtein/levenshtein_py.dart",
         "docs/index.rst",
         "tests/test_fallback.py"
@@ -106,33 +106,33 @@
     },
     {
       "src": 1,
-      "dst": 3,
-      "reason": "Batch computation may utilize weighted edits for distance calculations.",
+      "dst": 4,
+      "reason": "Weighted edits may affect the operations path output.",
       "confidence": 0.6
     },
     {
       "src": 2,
-      "dst": 4,
-      "reason": "Edit operations path may be influenced by max-distance logic.",
-      "confidence": 0.5
+      "dst": 3,
+      "reason": "Batch computation may utilize max-distance cutoff for performance.",
+      "confidence": 0.8
     },
     {
       "src": 3,
-      "dst": 4,
-      "reason": "Batch processing may require detailed edit operations output.",
+      "dst": 5,
+      "reason": "Batch processing may need to handle grapheme clusters for accuracy.",
       "confidence": 0.5
     },
     {
       "src": 4,
       "dst": 5,
-      "reason": "Edit operations may need to account for grapheme clusters.",
+      "reason": "Edit operations may need to consider grapheme clusters.",
       "confidence": 0.4
     },
     {
       "src": 5,
       "dst": 6,
       "reason": "Fallback module should support grapheme clusters for consistency.",
-      "confidence": 0.3
+      "confidence": 0.5
     }
   ]
 }
