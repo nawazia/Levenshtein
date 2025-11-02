@@ -11,18 +11,15 @@
       ],
       "probable_files": [
         "deps.json",
+        "plan.json",
         "docs/index.rst",
-        "docs/conf.py",
-        "make.bat",
-        ".gitignore",
-        ".pre-commit-config.yaml",
-        "pyproject.toml"
+        "src/Levenshtein/__init__.py"
       ]
     },
     {
       "id": "task_2",
       "title": "Add Max-Distance Cutoff Option",
-      "rationale": "To improve performance by allowing the distance method to return early for strings that exceed a specified threshold.",
+      "rationale": "To improve performance by allowing the distance method to return early for inputs exceeding a specified threshold.",
       "deliverables": [
         "New methods distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)",
         "Benchmarks added",
@@ -30,33 +27,30 @@
       ],
       "probable_files": [
         "deps.json",
-        "docs/index.rst",
-        "docs/levenshtein.rst",
+        "plan.json",
         "src/Levenshtein/levenshtein_cpp.pyx",
-        "src/Levenshtein/__init__.pyi",
-        "src/Levenshtein/Levenshtein-c/_levenshtein.hpp",
-        "src/Levenshtein/Levenshtein-c/_levenshtein.cpp",
-        "src/Levenshtein/StringMatcher.py",
         "src/Levenshtein/__init__.py"
       ]
     },
     {
       "id": "task_3",
-      "title": "Implement Multi-Threaded Batch Computation",
-      "rationale": "To allow users to process large lists of strings in parallel, improving performance for bulk similarity ranking.",
+      "title": "Implement Multi-Threaded Batch Distance Computation",
+      "rationale": "To allow faster processing of large lists of strings for similarity ranking.",
       "deliverables": [
         "New batch method batch_distance(list1, list2, threads=T)",
         "Updated documentation",
         "New performance test case"
       ],
       "probable_files": [
-        "deps.json"
+        "deps.json",
+        "plan.json",
+        "src/Levenshtein/__init__.py"
       ]
     },
     {
       "id": "task_4",
       "title": "Output Edit Operations Path",
-      "rationale": "To provide users with detailed information on the edit operations performed during distance calculations.",
+      "rationale": "To provide detailed insights into the edit operations performed during distance calculations.",
       "deliverables": [
         "New method distance_with_ops(s1, s2)",
         "Updated documentation",
@@ -64,48 +58,37 @@
       ],
       "probable_files": [
         "deps.json",
-        "docs/index.rst",
-        "docs/conf.py",
-        "make.bat",
-        ".gitignore",
-        ".pre-commit-config.yaml",
-        "pyproject.toml"
+        "plan.json",
+        "src/Levenshtein/__init__.py"
       ]
     },
     {
       "id": "task_5",
       "title": "Support Unicode Grapheme Clusters",
-      "rationale": "To ensure that multi-codepoint characters are treated as a single unit in distance calculations, improving correctness.",
+      "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations.",
       "deliverables": [
         "New optional parameter use_graphemes=True",
         "Documentation of behavior",
-        "Tests covering grapheme vs code-point scenarios"
+        "Tests for grapheme vs code-point scenarios"
       ],
       "probable_files": [
         "deps.json",
-        "docs/index.rst",
-        "docs/conf.py",
-        "make.bat",
-        ".gitignore",
-        ".pre-commit-config.yaml",
-        "pyproject.toml"
+        "plan.json",
+        "src/Levenshtein/__init__.py"
       ]
     },
     {
       "id": "task_6",
       "title": "Introduce Pure-Python Fallback Module",
-      "rationale": "To ensure functionality on platforms where the C extension cannot compile, improving portability.",
+      "rationale": "To maintain functionality on platforms where the C extension cannot compile.",
       "deliverables": [
-        "Fallback module levenshtein_py.dart introduced",
-        "Automatic selection if C extension load fails",
+        "Fallback module levenshtein_py.dart",
+        "Automatic selection logic",
         "Documentation on performance trade-off"
       ],
       "probable_files": [
         "deps.json",
-        "docs/index.rst",
-        "docs/conf.py",
-        "make.bat",
-        ".gitignore",
+        "plan.json",
         "src/Levenshtein/__init__.py"
       ]
     }
@@ -114,31 +97,31 @@
     {
       "src": 1,
       "dst": 2,
-      "reason": "Max-distance cutoff may depend on weighted edits for accurate calculations.",
+      "reason": "Max-distance cutoff may depend on weighted edits for scoring.",
       "confidence": 0.7
     },
     {
       "src": 2,
       "dst": 3,
-      "reason": "Batch computation may utilize max-distance cutoff for performance.",
+      "reason": "Batch processing may utilize max-distance cutoff for efficiency.",
       "confidence": 0.6
     },
     {
-      "src": 1,
+      "src": 3,
       "dst": 4,
-      "reason": "Edit operations path may be influenced by weighted edits.",
+      "reason": "Batch processing may require detailed edit operations output.",
       "confidence": 0.5
     },
     {
-      "src": 5,
-      "dst": 4,
-      "reason": "Grapheme support may affect edit operations output.",
+      "src": 4,
+      "dst": 5,
+      "reason": "Edit operations may need to consider grapheme clusters.",
       "confidence": 0.4
     },
     {
-      "src": 6,
-      "dst": 1,
-      "reason": "Fallback module may need to support weighted edits.",
+      "src": 5,
+      "dst": 6,
+      "reason": "Fallback module should support grapheme clusters for consistency.",
       "confidence": 0.3
     }
   ]

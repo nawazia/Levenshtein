@@ -9,46 +9,47 @@
             "task_1"
           ],
           "parts_covered": {
-            "src/Levenshtein/levenshtein_cpp.pyx": [
-              "Implement distance_with_weights method"
+            "src/Levenshtein": [
+              "levenshtein_cpp.pyx",
+              "__init__.py"
             ],
-            "src/Levenshtein/__init__.py": [
-              "Expose distance_with_weights in the API"
+            "docs": [
+              "levenshtein.rst"
             ],
-            "docs/levenshtein.rst": [
-              "Update documentation for distance_with_weights"
+            "tests": [
+              "test_levenshtein_distance.py"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Implement distance_with_weights method",
-              "body": "Added a new method to calculate edit distance with weighted character substitutions.",
+              "title": "Add distance_with_weights method",
+              "body": "Implemented the distance_with_weights method to support weighted edits in distance calculations.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Added distance_with_weights function to handle weighted edits."
+                "Added distance_with_weights method to calculate edit distance with weights."
               ]
             },
             {
-              "title": "Expose distance_with_weights in the API",
-              "body": "Updated the __init__.py to include the new distance_with_weights method.",
-              "files": [
-                "src/Levenshtein/__init__.py"
-              ],
-              "per_file_changes": [
-                "Added distance_with_weights to the public API."
-              ]
-            },
-            {
-              "title": "Update documentation for distance_with_weights",
-              "body": "Documented the new distance_with_weights method in the API documentation.",
+              "title": "Update documentation for weighted edits",
+              "body": "Updated the documentation to include the new distance_with_weights method and its usage.",
               "files": [
                 "docs/levenshtein.rst"
               ],
               "per_file_changes": [
-                "Added usage examples and parameter descriptions for distance_with_weights."
+                "Added documentation for distance_with_weights method."
+              ]
+            },
+            {
+              "title": "Add tests for weighted edits",
+              "body": "Created tests to validate the behavior of the distance_with_weights method.",
+              "files": [
+                "tests/test_levenshtein_distance.py"
+              ],
+              "per_file_changes": [
+                "Added test cases for distance_with_weights method."
               ]
             }
           ]
@@ -60,46 +61,34 @@
             "task_2"
           ],
           "parts_covered": {
-            "src/Levenshtein/levenshtein_cpp.pyx": [
-              "Implement distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)"
+            "src/Levenshtein": [
+              "levenshtein_cpp.pyx",
+              "__init__.py"
             ],
-            "src/Levenshtein/__init__.py": [
-              "Expose new methods in the API"
-            ],
-            "docs/levenshtein.rst": [
-              "Update documentation for new methods"
+            "tests": [
+              "test_levenshtein_distance.py"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Implement distance and similarity methods with max distance",
-              "body": "Added new methods to handle max distance cutoff for performance improvements.",
+              "title": "Implement max distance cutoff in distance method",
+              "body": "Added max_dist parameter to distance method to allow early returns for large distances.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Implemented distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)."
+                "Modified distance method to include max_dist parameter."
               ]
             },
             {
-              "title": "Expose new methods in the API",
-              "body": "Updated the __init__.py to include the new distance and similarity methods.",
+              "title": "Update tests for max distance cutoff",
+              "body": "Added tests to ensure the max_dist functionality works as expected.",
               "files": [
-                "src/Levenshtein/__init__.py"
+                "tests/test_levenshtein_distance.py"
               ],
               "per_file_changes": [
-                "Added distance and similarity methods to the public API."
-              ]
-            },
-            {
-              "title": "Update documentation for new methods",
-              "body": "Documented the new distance and similarity methods in the API documentation.",
-              "files": [
-                "docs/levenshtein.rst"
-              ],
-              "per_file_changes": [
-                "Added usage examples and parameter descriptions for distance and similarity methods."
+                "Added test cases for max distance cutoff."
               ]
             }
           ]
@@ -109,52 +98,50 @@
     "@guyrosin": {
       "branches": [
         {
-          "name": "feature/multi-threaded-batch-computation",
+          "name": "feature/multi-threaded-batch",
           "rationale": "To allow faster processing of large lists of strings for similarity ranking through parallel computation.",
           "tasks_included": [
             "task_3"
           ],
           "parts_covered": {
-            "src/Levenshtein/levenshtein_cpp.pyx": [
-              "Implement batch_distance(list1, list2, threads=T)"
+            "src/Levenshtein": [
+              "levenshtein_cpp.pyx",
+              "__init__.py"
             ],
-            "src/Levenshtein/__init__.py": [
-              "Expose batch_distance in the API"
-            ],
-            "docs/levenshtein.rst": [
-              "Update documentation for batch_distance"
+            "tests": [
+              "test_levenshtein_distance.py"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Implement batch_distance method",
-              "body": "Added a new method for batch processing of distance calculations.",
+              "title": "Add batch_distance method for multi-threading",
+              "body": "Implemented batch_distance method to compute distances in parallel.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Implemented batch_distance function for multi-threaded processing."
+                "Added batch_distance method for multi-threaded computation."
               ]
             },
             {
-              "title": "Expose batch_distance in the API",
-              "body": "Updated the __init__.py to include the new batch_distance method.",
-              "files": [
-                "src/Levenshtein/__init__.py"
-              ],
-              "per_file_changes": [
-                "Added batch_distance to the public API."
-              ]
-            },
-            {
-              "title": "Update documentation for batch_distance",
-              "body": "Documented the new batch_distance method in the API documentation.",
+              "title": "Update documentation for batch processing",
+              "body": "Updated documentation to include the new batch_distance method.",
               "files": [
                 "docs/levenshtein.rst"
               ],
               "per_file_changes": [
-                "Added usage examples and parameter descriptions for batch_distance."
+                "Added documentation for batch_distance method."
+              ]
+            },
+            {
+              "title": "Add performance tests for batch processing",
+              "body": "Created performance tests to validate the efficiency of the batch_distance method.",
+              "files": [
+                "tests/test_levenshtein_distance.py"
+              ],
+              "per_file_changes": [
+                "Added performance test cases for batch_distance method."
               ]
             }
           ]
@@ -166,46 +153,97 @@
             "task_4"
           ],
           "parts_covered": {
-            "src/Levenshtein/levenshtein_cpp.pyx": [
-              "Implement distance_with_ops(s1, s2)"
+            "src/Levenshtein": [
+              "levenshtein_cpp.pyx",
+              "__init__.py"
             ],
-            "src/Levenshtein/__init__.py": [
-              "Expose distance_with_ops in the API"
-            ],
-            "docs/levenshtein.rst": [
-              "Update documentation for distance_with_ops"
+            "tests": [
+              "test_levenshtein_distance.py"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Implement distance_with_ops method",
-              "body": "Added a new method to output the edit operations path.",
+              "title": "Add distance_with_ops method",
+              "body": "Implemented distance_with_ops method to return edit operations.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Implemented distance_with_ops function to return edit operations."
+                "Added distance_with_ops method to return edit operations."
               ]
             },
             {
-              "title": "Expose distance_with_ops in the API",
-              "body": "Updated the __init__.py to include the new distance_with_ops method.",
-              "files": [
-                "src/Levenshtein/__init__.py"
-              ],
-              "per_file_changes": [
-                "Added distance_with_ops to the public API."
-              ]
-            },
-            {
-              "title": "Update documentation for distance_with_ops",
-              "body": "Documented the new distance_with_ops method in the API documentation.",
+              "title": "Update documentation for edit operations",
+              "body": "Updated documentation to include the new distance_with_ops method.",
               "files": [
                 "docs/levenshtein.rst"
               ],
               "per_file_changes": [
-                "Added usage examples and parameter descriptions for distance_with_ops."
+                "Added documentation for distance_with_ops method."
+              ]
+            },
+            {
+              "title": "Add tests for edit operations",
+              "body": "Created tests to validate the behavior of the distance_with_ops method.",
+              "files": [
+                "tests/test_levenshtein_distance.py"
+              ],
+              "per_file_changes": [
+                "Added test cases for distance_with_ops method."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "@antoinetavant": {
+      "branches": [
+        {
+          "name": "feature/unicode-grapheme-clusters",
+          "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations, improving correctness.",
+          "tasks_included": [
+            "task_5"
+          ],
+          "parts_covered": {
+            "src/Levenshtein": [
+              "levenshtein_cpp.pyx",
+              "__init__.py"
+            ],
+            "tests": [
+              "test_levenshtein_distance.py"
+            ]
+          },
+          "risk_notes": [],
+          "commits": [
+            {
+              "title": "Add support for grapheme clusters",
+              "body": "Implemented support for grapheme clusters in distance calculations.",
+              "files": [
+                "src/Levenshtein/levenshtein_cpp.pyx"
+              ],
+              "per_file_changes": [
+                "Modified distance methods to handle grapheme clusters."
+              ]
+            },
+            {
+              "title": "Update documentation for grapheme support",
+              "body": "Updated documentation to reflect the new grapheme cluster support.",
+              "files": [
+                "docs/levenshtein.rst"
+              ],
+              "per_file_changes": [
+                "Added documentation for grapheme cluster support."
+              ]
+            },
+            {
+              "title": "Add tests for grapheme clusters",
+              "body": "Created tests to validate the behavior of distance methods with grapheme clusters.",
+              "files": [
+                "tests/test_levenshtein_distance.py"
+              ],
+              "per_file_changes": [
+                "Added test cases for grapheme cluster handling."
               ]
             }
           ]
@@ -215,137 +253,93 @@
     "@LecrisUT": {
       "branches": [
         {
-          "name": "feature/unicode-grapheme-clusters",
-          "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations, improving correctness.",
-          "tasks_included": [
-            "task_5"
-          ],
-          "parts_covered": {
-            "src/Levenshtein/levenshtein_cpp.pyx": [
-              "Add optional parameter use_graphemes=True"
-            ],
-            "src/Levenshtein/__init__.py": [
-              "Expose grapheme support in the API"
-            ],
-            "docs/levenshtein.rst": [
-              "Update documentation for grapheme support"
-            ]
-          },
-          "risk_notes": [],
-          "commits": [
-            {
-              "title": "Add grapheme support to distance methods",
-              "body": "Added an optional parameter to support grapheme clusters.",
-              "files": [
-                "src/Levenshtein/levenshtein_cpp.pyx"
-              ],
-              "per_file_changes": [
-                "Added use_graphemes parameter to distance methods."
-              ]
-            },
-            {
-              "title": "Expose grapheme support in the API",
-              "body": "Updated the __init__.py to include grapheme support.",
-              "files": [
-                "src/Levenshtein/__init__.py"
-              ],
-              "per_file_changes": [
-                "Added grapheme support to the public API."
-              ]
-            },
-            {
-              "title": "Update documentation for grapheme support",
-              "body": "Documented the new grapheme support in the API documentation.",
-              "files": [
-                "docs/levenshtein.rst"
-              ],
-              "per_file_changes": [
-                "Added usage examples and parameter descriptions for grapheme support."
-              ]
-            }
-          ]
-        },
-        {
           "name": "feature/pure-python-fallback",
           "rationale": "To maintain functionality on platforms where the C extension cannot compile, enhancing portability.",
           "tasks_included": [
             "task_6"
           ],
           "parts_covered": {
-            "src/Levenshtein/levenshtein_py.dart": [
-              "Create fallback module"
+            "src/Levenshtein": [
+              "levenshtein_py.dart"
             ],
-            "src/Levenshtein/__init__.py": [
-              "Automatic selection logic for fallback"
-            ],
-            "docs/levenshtein.rst": [
-              "Update documentation on fallback module"
+            "tests": [
+              "test_levenshtein_distance.py"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Create fallback module for pure-Python implementation",
-              "body": "Added a pure-Python fallback module for compatibility.",
+              "title": "Add pure-Python fallback module",
+              "body": "Implemented levenshtein_py.dart as a fallback for C extension.",
               "files": [
                 "src/Levenshtein/levenshtein_py.dart"
               ],
               "per_file_changes": [
-                "Implemented pure-Python fallback logic."
+                "Added pure-Python implementation for Levenshtein distance."
               ]
             },
             {
-              "title": "Add automatic selection logic for fallback",
-              "body": "Updated the __init__.py to include logic for selecting the fallback module.",
+              "title": "Update selection logic for fallback",
+              "body": "Implemented logic to select between C extension and pure-Python fallback.",
               "files": [
                 "src/Levenshtein/__init__.py"
               ],
               "per_file_changes": [
-                "Added logic to select between C extension and pure-Python fallback."
+                "Added logic to choose between C extension and pure-Python fallback."
               ]
             },
             {
-              "title": "Update documentation on fallback module",
-              "body": "Documented the fallback module and its usage.",
+              "title": "Update documentation for fallback module",
+              "body": "Updated documentation to include information about the pure-Python fallback.",
               "files": [
                 "docs/levenshtein.rst"
               ],
               "per_file_changes": [
-                "Added usage examples and performance trade-off information."
+                "Added documentation for pure-Python fallback module."
+              ]
+            },
+            {
+              "title": "Add tests for fallback module",
+              "body": "Created tests to validate the behavior of the pure-Python fallback.",
+              "files": [
+                "tests/test_levenshtein_distance.py"
+              ],
+              "per_file_changes": [
+                "Added test cases for pure-Python fallback module."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "@eansengchang": {
+      "branches": [
+        {
+          "name": "docs/readme-review-note",
+          "rationale": "To add a simple line in readme file that says 'reviewed by Bob'.",
+          "tasks_included": [
+            "task_7"
+          ],
+          "parts_covered": {
+            "README.md": [
+              "Add 'reviewed by Bob' line"
+            ]
+          },
+          "risk_notes": [],
+          "commits": [
+            {
+              "title": "Docs: Add review acknowledgement",
+              "body": "Added 'reviewed by Bob' line to README.",
+              "files": [
+                "README.md"
+              ],
+              "per_file_changes": [
+                "Added 'reviewed by Bob' line"
               ]
             }
           ]
         }
       ]
     }
-  },
-  "@eansengchang": {
-    "branches": [
-      {
-        "name": "docs/readme-review-note",
-        "rationale": "To add a simple line in readme file that says 'reviewed by Bob'.",
-        "tasks_included": [
-          "task_7"
-        ],
-        "parts_covered": {
-          "README.md": [
-            "Add 'reviewed by Bob' line"
-          ]
-        },
-        "risk_notes": [],
-        "commits": [
-          {
-            "title": "Docs: Add review acknowledgement",
-            "body": "Added 'reviewed by Bob' line to README.",
-            "files": [
-              "README.md"
-            ],
-            "per_file_changes": [
-              "Added 'reviewed by Bob' line"
-            ]
-          }
-        ]
-      }
-    ]
   }
 }
