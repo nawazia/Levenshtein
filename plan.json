@@ -4,14 +4,19 @@
       "branches": [
         {
           "name": "feature/weighted-edits",
-          "rationale": "Implementing weighted edits support is foundational for subsequent tasks that depend on it.",
+          "rationale": "To enhance similarity scoring by allowing certain character substitutions to count differently in edit distance calculations.",
           "tasks_included": [
             "task_1"
           ],
           "parts_covered": {
-            "src/Levenshtein": [
-              "levenshtein_cpp.pyx",
-              "__init__.py"
+            "src/Levenshtein/levenshtein_cpp.pyx": [
+              "Add new API method distance_with_weights"
+            ],
+            "src/Levenshtein/__init__.py": [
+              "Update __init__.py to include distance_with_weights"
+            ],
+            "docs/levenshtein.rst": [
+              "Update documentation page for distance_with_weights"
             ]
           },
           "risk_notes": [],
@@ -23,73 +28,78 @@
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Added distance_with_weights function to handle weighted edits."
+                "Added distance_with_weights function"
               ]
             },
             {
-              "title": "Update documentation for weighted edits",
-              "body": "Updated the documentation to include the new distance_with_weights method.",
+              "title": "Update __init__.py for new method",
+              "body": "Included distance_with_weights in the module's API.",
+              "files": [
+                "src/Levenshtein/__init__.py"
+              ],
+              "per_file_changes": [
+                "Added distance_with_weights to __all__"
+              ]
+            },
+            {
+              "title": "Update documentation for distance_with_weights",
+              "body": "Documented the new API method distance_with_weights.",
               "files": [
                 "docs/levenshtein.rst"
               ],
               "per_file_changes": [
-                "Added details about the distance_with_weights method."
-              ]
-            },
-            {
-              "title": "Add tests for distance_with_weights",
-              "body": "Implemented tests to cover various scenarios for the distance_with_weights method.",
-              "files": [
-                "tests/test_levenshtein_distance.py"
-              ],
-              "per_file_changes": [
-                "Added test cases for distance_with_weights."
+                "Added documentation for distance_with_weights"
               ]
             }
           ]
         },
         {
-          "name": "feature/max-distance-cutoff",
-          "rationale": "The max-distance cutoff option builds on the weighted edits support, allowing for early returns in distance calculations.",
+          "name": "feature/pure-python-fallback",
+          "rationale": "To maintain functionality on platforms where the C extension cannot compile, enhancing portability.",
           "tasks_included": [
-            "task_2"
+            "task_6"
           ],
           "parts_covered": {
-            "src/Levenshtein": [
-              "levenshtein_cpp.pyx",
-              "__init__.py"
+            "src/Levenshtein/levenshtein_py.dart": [
+              "Add fallback module for pure Python implementation"
+            ],
+            "src/Levenshtein/__init__.py": [
+              "Update __init__.py to include fallback module"
+            ],
+            "docs/levenshtein.rst": [
+              "Document the fallback module and its performance trade-off"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Implement distance and similarity methods with max_dist",
-              "body": "Added new methods to handle max distance cutoff for distance and similarity calculations.",
+              "title": "Add pure-Python fallback module",
+              "body": "Implemented a fallback module for environments without C extension support.",
               "files": [
-                "src/Levenshtein/levenshtein_cpp.pyx"
+                "src/Levenshtein/levenshtein_py.dart"
               ],
               "per_file_changes": [
-                "Added distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N) methods."
+                "Added pure-Python implementation of Levenshtein distance"
               ]
             },
             {
-              "title": "Update documentation for max distance methods",
-              "body": "Updated documentation to reflect the new max distance methods.",
+              "title": "Update __init__.py for fallback module",
+              "body": "Included fallback module in the module's API.",
+              "files": [
+                "src/Levenshtein/__init__.py"
+              ],
+              "per_file_changes": [
+                "Added levenshtein_py to __all__"
+              ]
+            },
+            {
+              "title": "Document fallback module",
+              "body": "Added documentation for the pure-Python fallback module.",
               "files": [
                 "docs/levenshtein.rst"
               ],
               "per_file_changes": [
-                "Added details about the new distance and similarity methods with max_dist."
-              ]
-            },
-            {
-              "title": "Add benchmarks for max distance methods",
-              "body": "Implemented benchmarks to evaluate the performance of the new max distance methods.",
-              "files": [
-                "tests/test_levenshtein_distance.py"
-              ],
-              "per_file_changes": [
-                "Added benchmark tests for distance and similarity methods with max_dist."
+                "Documented the fallback module and its performance trade-off"
               ]
             }
           ]
@@ -99,188 +109,157 @@
     "@guyrosin": {
       "branches": [
         {
-          "name": "feature/multi-threaded-batch-computation",
-          "rationale": "This task allows for faster processing and builds on the previous tasks.",
+          "name": "feature/max-distance-cutoff",
+          "rationale": "To improve performance by allowing the distance method to return early for inputs exceeding a specified threshold.",
           "tasks_included": [
-            "task_3"
+            "task_2"
           ],
           "parts_covered": {
-            "src/Levenshtein": [
-              "levenshtein_cpp.pyx",
-              "__init__.py"
+            "src/Levenshtein/levenshtein_cpp.pyx": [
+              "Add new methods distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)"
+            ],
+            "tests/test_levenshtein_distance.py": [
+              "Add tests for max distance functionality"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
-              "title": "Implement batch_distance method",
-              "body": "Added a new method for batch processing of distance calculations.",
+              "title": "Implement max distance methods",
+              "body": "Added distance and similarity methods with max distance parameter.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Added batch_distance(list1, list2, threads=T) method."
+                "Added distance(s1, s2, max_dist=N) and similarity(s1, s2, max_dist=N)"
               ]
             },
             {
-              "title": "Update documentation for batch processing",
-              "body": "Updated documentation to include the new batch_distance method.",
-              "files": [
-                "docs/levenshtein.rst"
-              ],
-              "per_file_changes": [
-                "Added details about the batch_distance method."
-              ]
-            },
-            {
-              "title": "Add performance test case for batch_distance",
-              "body": "Implemented performance tests for the batch_distance method.",
+              "title": "Add tests for max distance methods",
+              "body": "Implemented tests to ensure max distance functionality works as expected.",
               "files": [
                 "tests/test_levenshtein_distance.py"
               ],
               "per_file_changes": [
-                "Added performance test cases for batch_distance."
+                "Added test cases for distance and similarity with max distance"
               ]
             }
           ]
         },
         {
-          "name": "feature/output-edit-operations-path",
-          "rationale": "This task provides insights into edit operations and is dependent on previous tasks.",
+          "name": "feature/edit-operations-path",
+          "rationale": "To provide detailed insights into the edit operations performed during distance calculations.",
           "tasks_included": [
             "task_4"
           ],
           "parts_covered": {
-            "src/Levenshtein": [
-              "levenshtein_cpp.pyx",
-              "__init__.py"
+            "src/Levenshtein/levenshtein_cpp.pyx": [
+              "Add new method distance_with_ops(s1, s2)"
+            ],
+            "tests/test_levenshtein_distance.py": [
+              "Add tests for distance_with_ops"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
               "title": "Implement distance_with_ops method",
-              "body": "Added a new method to output the edit operations path.",
+              "body": "Added a method to return the edit operations path.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Added distance_with_ops(s1, s2) method."
-              ]
-            },
-            {
-              "title": "Update documentation for distance_with_ops",
-              "body": "Updated documentation to include the new distance_with_ops method.",
-              "files": [
-                "docs/levenshtein.rst"
-              ],
-              "per_file_changes": [
-                "Added details about the distance_with_ops method."
+                "Added distance_with_ops function"
               ]
             },
             {
               "title": "Add tests for distance_with_ops",
-              "body": "Implemented tests for the distance_with_ops method.",
+              "body": "Implemented tests to validate the output of distance_with_ops.",
               "files": [
                 "tests/test_levenshtein_distance.py"
               ],
               "per_file_changes": [
-                "Added test cases for distance_with_ops."
+                "Added test cases for distance_with_ops"
               ]
             }
           ]
         }
       ]
     },
-    "@LecrisUT": {
+    "@antoinetavant": {
       "branches": [
         {
+          "name": "feature/multi-threaded-batch",
+          "rationale": "To allow faster processing of large lists of strings for similarity ranking through parallel computation.",
+          "tasks_included": [
+            "task_3"
+          ],
+          "parts_covered": {
+            "src/Levenshtein/levenshtein_cpp.pyx": [
+              "Add new batch method batch_distance(list1, list2, threads=T)"
+            ],
+            "tests/test_levenshtein_distance.py": [
+              "Add performance test case for batch_distance"
+            ]
+          },
+          "risk_notes": [],
+          "commits": [
+            {
+              "title": "Implement batch_distance method",
+              "body": "Added a method for batch processing of distance calculations.",
+              "files": [
+                "src/Levenshtein/levenshtein_cpp.pyx"
+              ],
+              "per_file_changes": [
+                "Added batch_distance function"
+              ]
+            },
+            {
+              "title": "Add performance tests for batch_distance",
+              "body": "Implemented tests to evaluate the performance of batch_distance.",
+              "files": [
+                "tests/test_levenshtein_distance.py"
+              ],
+              "per_file_changes": [
+                "Added performance test cases for batch_distance"
+              ]
+            }
+          ]
+        },
+        {
           "name": "feature/unicode-grapheme-clusters",
-          "rationale": "This task ensures correctness in distance calculations and is necessary for the fallback module.",
+          "rationale": "To ensure multi-codepoint characters are treated as single units in distance calculations, improving correctness.",
           "tasks_included": [
             "task_5"
           ],
           "parts_covered": {
-            "src/Levenshtein": [
-              "levenshtein_cpp.pyx",
-              "__init__.py"
+            "src/Levenshtein/levenshtein_cpp.pyx": [
+              "Add new optional parameter use_graphemes=True"
+            ],
+            "tests/test_levenshtein_distance.py": [
+              "Add tests for grapheme cluster scenarios"
             ]
           },
           "risk_notes": [],
           "commits": [
             {
               "title": "Add support for grapheme clusters",
-              "body": "Implemented support for Unicode grapheme clusters in distance calculations.",
+              "body": "Implemented an optional parameter to handle grapheme clusters.",
               "files": [
                 "src/Levenshtein/levenshtein_cpp.pyx"
               ],
               "per_file_changes": [
-                "Added optional parameter use_graphemes=True."
-              ]
-            },
-            {
-              "title": "Update documentation for grapheme support",
-              "body": "Updated documentation to reflect the new grapheme support.",
-              "files": [
-                "docs/levenshtein.rst"
-              ],
-              "per_file_changes": [
-                "Added details about grapheme cluster support."
+                "Added use_graphemes parameter to relevant methods"
               ]
             },
             {
               "title": "Add tests for grapheme clusters",
-              "body": "Implemented tests to cover scenarios with grapheme clusters.",
+              "body": "Implemented tests to validate behavior with grapheme clusters.",
               "files": [
                 "tests/test_levenshtein_distance.py"
               ],
               "per_file_changes": [
-                "Added test cases for grapheme cluster scenarios."
-              ]
-            }
-          ]
-        },
-        {
-          "name": "feature/python-fallback-module",
-          "rationale": "This task ensures functionality on platforms where the C extension cannot compile.",
-          "tasks_included": [
-            "task_6"
-          ],
-          "parts_covered": {
-            "src/Levenshtein": [
-              "levenshtein_py.dart"
-            ]
-          },
-          "risk_notes": [],
-          "commits": [
-            {
-              "title": "Implement levenshtein_py fallback module",
-              "body": "Added a pure-Python fallback module for compatibility.",
-              "files": [
-                "src/Levenshtein/levenshtein_py.dart"
-              ],
-              "per_file_changes": [
-                "Created levenshtein_py.dart for fallback."
-              ]
-            },
-            {
-              "title": "Add automatic selection logic",
-              "body": "Implemented logic to automatically select the appropriate module.",
-              "files": [
-                "src/Levenshtein/__init__.py"
-              ],
-              "per_file_changes": [
-                "Added logic to select between C extension and pure-Python fallback."
-              ]
-            },
-            {
-              "title": "Update documentation for fallback module",
-              "body": "Updated documentation to include details about the fallback module.",
-              "files": [
-                "docs/levenshtein.rst"
-              ],
-              "per_file_changes": [
-                "Added details about the pure-Python fallback module."
+                "Added test cases for grapheme cluster handling"
               ]
             }
           ]
